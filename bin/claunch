@@ -53,8 +53,19 @@ set -- "${ARGS[@]}"
 # === Check for Claude CLI ===
 if ! command -v claude &> /dev/null; then
   echo "❌ Claude CLI not found. Please install it first."
-  echo "   Visit: https://docs.anthropic.com/en/docs/claude-code" 
+  echo "   Visit: https://docs.anthropic.com/en/docs/claude-code"
   exit 1
+fi
+
+# === Enable systemd user session linger for persistent services ===
+# This ensures Claude sessions survive SSH disconnections
+if command -v loginctl &> /dev/null; then
+  if ! loginctl show-user "$(whoami)" --property Linger | grep -q "Linger=yes"; then
+    echo "🔧 Enabling systemd user session linger..."
+    loginctl enable-linger 2>/dev/null || {
+      echo "⚠️  Could not enable linger (may require sudo in some cases)"
+    }
+  fi
 fi
 
 # === Function to create tmux config ===
