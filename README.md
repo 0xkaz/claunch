@@ -198,6 +198,22 @@ If Claude can't resume your session:
 
 ---
 
+## 🧪 Development
+
+`claunch` is a single Bash script. A `Makefile` provides the common tasks:
+
+```bash
+make lint     # Run shellcheck on the shell scripts
+make test     # Run the smoke tests
+make install  # Install claunch to $HOME/bin
+make help     # List available targets
+```
+
+- **Lint** uses [shellcheck](https://www.shellcheck.net/) — install it with `brew install shellcheck` (macOS) or `apt install shellcheck` (Debian/Ubuntu).
+- **Tests** live in `tests/test_claunch.sh` and run against an isolated `HOME` with a fake `claude` on `PATH`, so they never touch your real environment.
+
+---
+
 ## 📄 License
 
 MIT License - feel free to use and modify!

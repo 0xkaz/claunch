@@ -10,7 +10,7 @@
 
 - 🧠 プロジェクトごとの Claude セッション管理（自動 resume）
 - ⚡ デフォルトで軽量な直接実行
-- 🧰 永続セッションのためのオプションル tmux サポート
+- 🧰 永続セッションのためのオプションの tmux サポート
 - 💻 macOS / Debian 系 Linux 対応
 - 🔐 `--dangerously-skip-permissions` フラグを自動付与
 - 🔄 セッションIDの保存・再利用が簡単
@@ -195,6 +195,22 @@ Claude がセッションを再開できない場合:
 1. セッションが期限切れの可能性
 2. 新しいセッションを開始して新しい ID を保存
 3. Claude のドキュメントでセッション制限を確認
+
+---
+
+## 🧪 開発
+
+`claunch` は単一の Bash スクリプトです。よく使うタスクは `Makefile` にまとめてあります:
+
+```bash
+make lint     # shellcheck でシェルスクリプトを静的解析
+make test     # スモークテストを実行
+make install  # claunch を $HOME/bin にインストール
+make help     # 利用可能なターゲット一覧を表示
+```
+
+- **Lint** は [shellcheck](https://www.shellcheck.net/) を使用します。`brew install shellcheck`（macOS）または `apt install shellcheck`（Debian/Ubuntu）でインストールできます。
+- **テスト** は `tests/test_claunch.sh` にあり、隔離された `HOME` と `PATH` 上のダミー `claude` を使って実行されるため、実際の環境には一切影響しません。
 
 ---
 

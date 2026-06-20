@@ -23,10 +23,14 @@ if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
   add_to_path() {
     local config_file="$1"
     if [[ -f "$config_file" ]] || [[ "$config_file" == *".zshrc" ]] || [[ "$config_file" == *".bashrc" ]] || [[ "$config_file" == *".bash_profile" ]]; then
+      # shellcheck disable=SC2016  # literal string intended for the shell config file, not expanded here
       if ! grep -q 'export PATH="$HOME/bin:$PATH"' "$config_file" 2>/dev/null; then
-        echo '' >> "$config_file"
-        echo '# Added by claunch installer' >> "$config_file"
-        echo 'export PATH="$HOME/bin:$PATH"' >> "$config_file"
+        # shellcheck disable=SC2016  # write the literal export line so it expands at the user's shell startup
+        {
+          echo ''
+          echo '# Added by claunch installer'
+          echo 'export PATH="$HOME/bin:$PATH"'
+        } >> "$config_file"
         echo "✅ Added PATH to $config_file"
         return 0
       else
